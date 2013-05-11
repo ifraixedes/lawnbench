@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lawnchair Spec</title>
+
+	<link rel="stylesheet" href="lib/qunit.css" type="text/css" media="screen">
+
+	<script src="lib/qunit.js"></script>
+	<script src="lib/json2.js"></script>
+	<script src="lib/zepto.js"></script>
+	<script src="../src/Lawnbench.js"></script>
+	<script src="../src/adapters/indexed-db-bench.js"></script>
+	<script src="../src/adapters/memory-bench.js"></script>
+
+	<script src="lawnbench-spec.js"></script>
+	<script src="lawnbench-memory-spec.js"></script>
+
+	<script>
+
+		// autostart seems to be a little eager
+		QUnit.config.autostart = false;
+		QUnit.config.reorder = false;
+
+		// kill qunit saves
+		try { sessionStorage.clear(); } catch (e) {}
+
+		var adapterId;
+
+		function startTests() {
+
+			// allow restriction of adapter in URL (e.g., ?adapter=ie-userdata)
+			var allowed = /adapter=([-\w]+)/.exec(window.location.href);
+			var adapters = Lawnbench.adaptersList;
+			var i;
+			var a;
+
+
+			if (allowed) {
+				allowed = allowed[1];
+			}
+
+			for (i = 0; i < adapters.length; i++) {
+				// make links for easy testing of different adapters
+				if (!adapters[i].valid()) {
+					a = document.createElement('label');
+					a.textContent = adapters[i].adapter + ' -- (Not valid in this environment))';
+					a.style.color = '#FF0000';
+				} else {
+					if (!allowed) {
+						allowed = adapters[i].adapter;
+						a = document.createElement('label');
+					} else {
+						a = document.createElement('a');
+						a.href = '?adapter=' + adapters[i].adapter;
+					}
+					a.textContent = adapters[i].adapter;
+					a.style.margin = '0 0.5em';
+					document.getElementById('qunit-header').appendChild(a);
+				}
+			}
+
+			if (!allowed) {
+				alert('any adapter available');
+			} else {
+				adapterId = allowed;
+				QUnit.start();
+			}
+		}
+
+	</script>
+</head>
+<body onload="startTests()">
+<h1 id="qunit-header">Lawnchair Spec</h1>
+
+<h2 id="qunit-banner"></h2>
+
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+</body>
+</html>
