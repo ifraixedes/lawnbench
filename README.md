@@ -27,7 +27,7 @@ Moreover that all the callbacks follow the node-convention callback, remember La
 
 The constructor has two parameters:
 
-1. This parameter is required and it may be an object with some options or an array or a string with the name to the collections to manage in the store created or connect to this instance.
+The first, is required and it may be an object with some options or an array or a string with the name to the collections to manage in the store created or connect to this instance.
 
 If options is an object, then it must have, at least, the 'collections' property which is the same type and values convention, that I mentioned in the above paragraph, as provided straight away as this constructor's parameter.
 
@@ -37,7 +37,7 @@ If options is an object, then it must have, at least, the 'collections' property
 * [plugins]: Object with the options for each used plugin. Each property defines the options to provide to the plugin's 'init' method, identified with the property's name, which is the proper plugin's 'id'.
 * .... : The rest of the parameters, if they exist, will be used by the adapter's 'init' method.
 
-2. The node-convention callback function which will be called when the store has been initialised or if an error happened. This is an optional parameter, but it is recommend to provide to know that the store is ready to use, and it is available to receive the read/write calls.
+An the second, the node-convention callback function which will be called when the store has been initialised or if an error happened. This is an optional parameter, but it is recommend to provide to know that the store is ready to use, and it is available to receive the read/write calls.
 
 Lawnbench as Lawnchair mix the adapter interface with the instance create by this constructor, so one valid adapter is required. The adapter may be specified by 'adapters' options parameter, and each adapter may require some options parameter and/or may be available depending the browser and its release, so the constructor checks if the adapter is valid using its 'valid' method and if it fails, then check the next one of the list until arrive at the end, and if it doesn't find any valid adapter then throws and exception. Note that the 'adapters' options' parameter is optional, so if it is not provide, the constructor will use the first valid adapter of the list, whose order corresponds with the including order of the javascript plugin files.
 
