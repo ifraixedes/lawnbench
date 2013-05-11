@@ -31,11 +31,11 @@ The constructor has two parameters:
 
 If options is an object, then it must have, at least, the 'collections' property which is the same type and values convention, that I mentioned in the above paragraph, as provided straight away as this constructor's parameter.
 
-    * collections: Array or string with the collections names of the store, managed for this instance. If it is a string then it must have the name of each collection separated by comma (,).
-    * [dbName]: The name of the database/store to use, by default 'lawnbench'.
-    * [adapters]: Array or string (if only one adapter is specified) with the id's (names) of the adapters to use in preference order.
-    * [plugins]: Object with the options for each used plugin. Each property defines the options to provide to the plugin's 'init' method, identified with the property's name, which is the proper plugin's 'id'.
-    * .... : The rest of the parameters, if they exist, will be used by the adapter's 'init' method.
+* collections: Array or string with the collections names of the store, managed for this instance. If it is a string then it must have the name of each collection separated by comma (,).
+* [dbName]: The name of the database/store to use, by default 'lawnbench'.
+* [adapters]: Array or string (if only one adapter is specified) with the id's (names) of the adapters to use in preference order.
+* [plugins]: Object with the options for each used plugin. Each property defines the options to provide to the plugin's 'init' method, identified with the property's name, which is the proper plugin's 'id'.
+* .... : The rest of the parameters, if they exist, will be used by the adapter's 'init' method.
 
 2. The node-convention callback function which will be called when the store has been initialised or if an error happened. This is an optional parameter, but it is recommend to provide to know that the store is ready to use, and it is available to receive the read/write calls.
 
