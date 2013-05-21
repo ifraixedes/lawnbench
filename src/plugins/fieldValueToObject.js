@@ -1,28 +1,18 @@
-'use strict';
+/**
+ * This plugin require provide an implementation of promise interface at least with the methods:
+ * defer and the object returned by defer implement: reject, resolve and promise # Minimal
+ * interface inspired by Kris Kowal's Q (https://github.com/kriskowal/q)
+ */
+
 
 /**
- * This plugin allows to change the behaviour of key-value collection's type.
- * When the plugin is applied, the method 'all' return a plain object, converting the returned
- * array of wrapper objects (key and value) in a object where the attributes are keys and their
- * values are the value.
+ * Note 1: Why this plugin wrap the adapter's method interface with callback parameter?
  *
- * The method is possible to apply to the same way to 'get', and to the write operations
- * 'save' and 'batch', but applying the transformation in the opposite way.
- *
- * The plugin accepts the next options parameters:
- *  autoKeyPath: And object where each attribute's name is the id of the adapter, and their values
- *    are the name of the parameter used for the wrapper object used in key-value collections
- *  [autoApply]: Boolean that if it is 'true' then the transformation is auto applied in the
- *    methods: 'get', 'save', and 'batch'. By default false;
- *  [collectionsObject]: If autoApply is 'true', then this parameter is required and it is an object
- *    that each attribute name is the adapter's name and the value must be an object with these
- *    attributes:
- *      # objName: The name of the property (adapter) that holds the information related to the
- *        collections to identify if the collection is a key-value or document (Object) collection.
- *      # keyPathAttr: The name of the property, that for each collection indentified in the
- *        variable that keeps the collection's type, holds the name of the property/attribute
- *        that define the key in the key-value wrapper object.
- *
+ * Promise interface alludes callback parameters in all the adapter's methods but, how adapters'
+ * implementations aren't aware about it, because Lawnbench is base in NodeJs callbacks convention,
+ * maybe some of these methods call to some other own methods internally providing an internal
+ * wrapped callback, so in that case, this method require call to the internal method not the
+ * implementation provided by this plugin.
  */
 Lawnbench.plugin('fieldValueToObject', {
 
@@ -198,7 +188,7 @@ Lawnbench.plugin('fieldValueToObject', {
                 for (oi = 0; oi < result.length; oi++) {
                   if (!isItWrappedObj(result[oi])) {
                     transformed = true;
-                    result = mergeObjects(sObjs);
+                    result = mergeObjects(result);
                     break;
                   }
                 }
