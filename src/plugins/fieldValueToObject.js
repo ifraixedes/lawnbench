@@ -68,7 +68,7 @@ Lawnbench.plugin('fieldValueToObject', {
       var keyValArray = [];
       var keyValObj;
 
-      for(var k in obj) {
+      for (var k in obj) {
         keyValObj = {};
         keyValObj[autoKeyPath] = k;
         keyValObj['value'] = obj[k];
@@ -178,32 +178,33 @@ Lawnbench.plugin('fieldValueToObject', {
           lbGet.call(self, colName, keyOrArray, callback);
         } else {
           lbGet.call(self, colName, keyOrArray, function (err, result) {
-            if (result) {
-              if (self.isArray(result)) {
-                // If one of the returned objects is not wrapped object then this method call internally
-                // to other so the overridden method by this plugin has applied the transformation
-                var oi;
-                var transformed = false;
+            var ki;
+            var mappedResult;
 
-                for (oi = 0; oi < result.length; oi++) {
-                  if (!isItWrappedObj(result[oi])) {
-                    transformed = true;
-                    result = mergeObjects(result);
-                    break;
-                  }
-                }
-                if (transformed === false) {
-                  result = arrayToObjectFn(result);
-                }
-              } else {
-                // If the returned object is not wrapped object then this method call internally
-                // to other so the overridden method by this plugin has applied the transformation
-                if (isItWrappedObj(result)) {
-                  result = keyValObjToObjFn(result);
-                }
-              }
+            if (err) {
+              callback(err, result);
+              return;
             }
-            callback(err, result);
+
+            mappedResult = {};
+
+            if (self.isArray(keyOrArray)) {
+
+              if (self.isArray(result)) {
+                for (ki = 0; ki < keyOrArray.length; ki++) {
+                  mappedResult[keyOrArray[ki]] = result[ki];
+                }
+
+                callback(null, mappedResult);
+
+              } else {
+                callback(null, result);
+              }
+
+            } else {
+              mappedResult[keyOrArray] = result;
+              callback(null, mappedResult);
+            }
           });
         }
       };

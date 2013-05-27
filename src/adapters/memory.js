@@ -2,6 +2,7 @@
 
 /**
  *
+ * TODO document notes
  * valid: check if the the adapter require more options parameters than usual
  * init options:
  *  # [autoKeyPath]: if it is not specified then 'id' will be used
@@ -33,13 +34,10 @@
  * Methods obj (depends of the collections option definition) param may be an object or value of
  * any type that it doesn't self contain its key, so if you would like to provide a key for it
  * rather than autogenerate one, then you can wrap it into an object with this two attributes
- *
  * {
- *  id: the key to use (the name of this property can be overridden by the options.autoKeyPath
- *    parameter)
+ *  id: the key to use (the name of this property can be overridden by the options.autoKeyPath parameter)
  *  value: the value to store
  * }
- *
  */
 
 Lawnbench.adapter('memory', (function () {
@@ -398,7 +396,6 @@ Lawnbench.adapter('memory', (function () {
 
       var self = this;
       var collection = this.colStores[colName];
-      var item;
 
       var cbWrapper = function (err, results) {
         if (callback) {
@@ -414,39 +411,13 @@ Lawnbench.adapter('memory', (function () {
       if (!this.isArray(keyOrArray)) {
         cbWrapper(null, collection.store[keyOrArray]);
       } else {
-
         var results = [];
-        var errors = [];
-        var numErrors = 0;
-        var done = keyOrArray.length;
-        var keys = keyOrArray;
+        var i;
 
-        var getOne = function (i) {
-          self.get(colName, keys[i], function (err, obj) {
-
-            if (err) {
-              numErrors++;
-              errors[i] = err;
-            } else {
-              results[i] = null;
-            }
-
-            results[i] = obj;
-
-            if ((--done) > 0) { return; }
-            if (callback) {
-              if (numErrors > 0) {
-                cbWrapper(errors, results);
-              } else {
-                cbWrapper(null, results);
-              }
-            }
-          });
-        };
-
-        for (var i = 0, l = keys.length; i < l; i++) {
-          getOne(i);
+        for (i = 0; i < keyOrArray.length; i++) {
+          results[i] = collection.store[keyOrArray[i]];
         }
+        callback(null, results);
       }
 
       return this;
