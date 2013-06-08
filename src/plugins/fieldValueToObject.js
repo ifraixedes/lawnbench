@@ -22,8 +22,6 @@ Lawnbench.plugin('fieldValueToObject', {
     var colsObjName;
     var colsObjKeyPathAttr;
     var autoKeyPath;
-    // Flag to control if the call to one method comes from one overridden method for this plugin
-    var intMethodCall = false;
 
     if (options.autoKeyPath[this.adapter]) {
       autoKeyPath = options.autoKeyPath[this.adapter];
