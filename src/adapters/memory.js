@@ -76,41 +76,11 @@ Lawnbench.adapter('memory', (function () {
       return false;
     }
 
-    if ((options.freezeObjects) && ('boolean' !== typeof options.freezeObjects)) {
-      return false;
-    }
-
     return true;
   };
 
-
-  // To make obj fully immutable, freeze each object in obj.
-  // To do so, we use this function.
-  var deepFreeze = function (obj) {
-    var prop;
-    var propKey;
-
-    if (('object' !== typeof obj) || (obj === null)) {
-      return obj;
-    }
-
-
-    Object.freeze(obj);
-    // First freeze the object.
-    for (propKey in obj) {
-      prop = obj[propKey];
-      if (!obj.hasOwnProperty(propKey) || (typeof prop !== 'object') || (prop === null) ||
-        Object.isFrozen(prop)) {
-        // If the object is on the prototype, not an object, or is already frozen,
-        // skip it. Note that this might leave an unfrozen reference somewhere in the
-        // object if there is an already frozen object containing an unfrozen object.
-        continue;
-      }
-
-      deepFreeze(prop); // Recursively call deepFreeze.
-    }
-
-    return obj;
+  var copy = function (obj) {
+    return JSON.parse(JSON.stringify(obj));
   };
 
 
@@ -122,7 +92,6 @@ Lawnbench.adapter('memory', (function () {
 
     this.colStores = {};
     this.autoKeyPath = 'id';
-    this.freezeObjects = false;
     this.extDb = false;
   };
 
@@ -142,24 +111,23 @@ Lawnbench.adapter('memory', (function () {
 
     init: function (options, callback) {
 
+      // Create the new objects store.
+      var i;
+      var collection;
+      var self = this;
+      var cbWrapper;
+
       if (!checkOptionsWithoutCollections(options)) {
         throw new Error('the provided options are not valid for this adapter');
       }
 
 
-      // Create the new objects store.
-      var i;
-      var collection;
-      var self = this;
-
-      var cbWrapper = function (err) {
+      cbWrapper = function (err) {
         if (callback) {
           self.lambda(callback)(err, self);
         }
       };
 
-
-      this.freezeObjects = ((!options.freezeObjects) || (!Object.freeze)) ? false : true;
 
       if (options.autoKeyPath) {
         this.autoKeyPath = options.autoKeyPath;
@@ -207,17 +175,16 @@ Lawnbench.adapter('memory', (function () {
 
         if (options.db) {
           if (!options.db.hasOwnProperty(collection.name)) {
-            this.extDb[collection.name] = options.db[collection.name] = {};
-          } else {
-            this.extDb[collection.name] = {};
+            options.db[collection.name] = {};
           }
+
+          this.extDb[collection.name] = {};
         }
       }
 
       // Database was provided
       if (options.db) {
         var colName;
-        var eleName;
 
         // migrating current collections if are exists in the new collections list
         for (colName in options.db) {
@@ -225,21 +192,11 @@ Lawnbench.adapter('memory', (function () {
             if (this.colStores[colName]) {
               // Make a copy of the collection of the current database into it new one
               if (('object' === typeof options.db[colName]) && (options.db[colName] !== null)) {
-                if (this.freezeObjects) {
-                  for (eleName in options.db[colName]) {
-                    this.colStores[colName].store[eleName] = this.extDb[colName][eleName] =
-                      deepFreeze(JSON.parse(JSON.stringify(options.db[colName][eleName])));
-                  }
-                } else {
-                  this.colStores[colName].store =
-                    this.extDb[colName] = JSON.parse(JSON.stringify(options.db[colName]));
-                }
-
-                options.db[colName] = this.extDb[colName];
+                this.colStores[colName].store = copy(options.db[colName]);
+                this.extDb[colName] = options.db[colName];
               }
             }
           }
-
         }
       }
 
@@ -247,16 +204,16 @@ Lawnbench.adapter('memory', (function () {
       return this;
     },
 
-    /** It is possible that the obj parameter is frozen  because the method doesn't make a copy of it**/
     save: function (colName, obj, callback) {
 
       var self = this;
       var collection = this.colStores[colName];
       var resultObj = {};
+      var theValue;
 
       var cbWrapper = function (err, result) {
         if (callback) {
-          self.lambda(callback)(err, result);
+          self.lambda(callback)(err, copy(result));
         }
       };
 
@@ -277,55 +234,54 @@ Lawnbench.adapter('memory', (function () {
           }
         }
 
-        collection.store[obj[collection.keyPath]] = (this.freezeObjects) ? deepFreeze(obj) : obj;
-        resultObj = obj;
+        collection.store[obj[collection.keyPath]] = copy(obj);
+        resultObj = copy(obj);
+
       } else {
         if ('object' === typeof obj) {
-          if (!obj.hasOwnProperty('value')) {
+          if (!(obj.hasOwnProperty('value')) || (obj.value === undefined) || (obj.value === null)) {
             cbWrapper(new Error('Collection without key path specified and the value has been ' +
               'wrapped into an object that doesn\'t have the \'value\' property (it is required)'),
               null);
             return this;
           }
 
-          if (obj.hasOwnProperty(this.autoKeyPath)) {
-            resultObj[this.autoKeyPath] = obj[this.autoKeyPath];
-            collection.store[obj[this.autoKeyPath]] =
-              (this.freezeObjects) ? deepFreeze(obj.value) : obj.value;
+          if ('object' === typeof obj['value']) {
+            theValue = copy(obj['value']);
+            resultObj.value = copy(theValue);
           } else {
-            if (collection.autoGenKey === true) {
-              resultObj[this.autoKeyPath] = this.uuid();
-              collection.store[resultObj[this.autoKeyPath]] =
-                (this.freezeObjects) ? deepFreeze(obj.value) : obj.value;
-            } else {
-              cbWrapper(new Error('Wapprer object without key: ' + this.autoKeyPath +
-                ' attribute ' +
-                ' and the autogenerated key was not enabled so it is required.'), null);
-              return this;
-            }
+            theValue = obj['value'];
+            resultObj.value = theValue;
           }
-          resultObj.value = obj.value;
         } else {
-          // Freeze is not needed because the value is a primitive
+          theValue = obj;
+          resultObj.value = theValue;
+        }
+
+
+        if (obj.hasOwnProperty(this.autoKeyPath)) {
+          resultObj[this.autoKeyPath] = obj[this.autoKeyPath];
+          collection.store[obj[this.autoKeyPath]] = theValue;
+        } else {
           if (collection.autoGenKey === true) {
             resultObj[this.autoKeyPath] = this.uuid();
-            collection.store[resultObj[this.autoKeyPath]] = obj;
+            collection.store[resultObj[this.autoKeyPath]] = theValue;
           } else {
-            cbWrapper(new Error('value to store that it doesn\'t have its own key and the ' +
-              'autogenerated key was not enabled so it is required a wrapper'), null);
+            cbWrapper(new Error('Wapprer object without key: ' + this.autoKeyPath +
+              ' attribute ' +
+              ' and the autogenerated key was not enabled so it is required.'), null);
             return this;
           }
-
-          resultObj.value = obj;
         }
       }
 
       try {
         if (this.extDb) {
           if (collection.keyPath !== undefined) {
-            this.extDb[colName][obj[collection.keyPath]] = obj;
+            this.extDb[colName][obj[collection.keyPath]] = copy(resultObj);
           } else {
-            this.extDb[colName][resultObj[this.autoKeyPath]] = resultObj.value;
+            this.extDb[colName][resultObj[this.autoKeyPath]] =
+              ('object' === typeof resultObj.value) ? copy(resultObj.value) : resultObj.value;
           }
         }
       } catch (e) {
@@ -343,7 +299,8 @@ Lawnbench.adapter('memory', (function () {
 
       var cbWrapper = function (err, results) {
         if (callback) {
-          self.lambda(callback)(err, results)
+          // Copy is not needed because save return a copy of each one
+          self.lambda(callback)(err, results);
         }
       };
 
@@ -399,7 +356,11 @@ Lawnbench.adapter('memory', (function () {
 
       var cbWrapper = function (err, results) {
         if (callback) {
-          self.lambda(callback)(err, results);
+          if ((results !== undefined) && (results !== null)) {
+            self.lambda(callback)(err, copy(results));
+          } else {
+            self.lambda(callback)(err, results);
+          }
         }
       };
 
@@ -467,7 +428,7 @@ Lawnbench.adapter('memory', (function () {
 
       if (collection.keyPath) {
         for (key in collection.store) {
-          toReturn.push(collection.store[key]);
+          toReturn.push(copy(collection.store[key]));
         }
       } else {
         for (key in collection.store) {
@@ -477,7 +438,7 @@ Lawnbench.adapter('memory', (function () {
 
           element[this.autoKeyPath] = key;
 
-          toReturn.push(element);
+          toReturn.push(copy(element));
         }
       }
 
@@ -599,7 +560,6 @@ Lawnbench.adapter('memory', (function () {
 
     nukeAll: function (callback) {
 
-      var key;
       var colName;
 
       for (colName in this.colStores) {

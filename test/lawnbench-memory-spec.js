@@ -15,7 +15,7 @@ test('Memory db external reference', function () {
     return;
   }
 
-  QUnit.expect(18);
+  QUnit.expect(17);
 
   var myDb = {
     store1: {
@@ -36,7 +36,6 @@ test('Memory db external reference', function () {
     recreate: true,
     adapters: adapterId,
     db: myDb,
-    freezeObjects: true,
     collections: [
       {
         name: 'store1',
@@ -57,7 +56,7 @@ test('Memory db external reference', function () {
     ]}, function (error, ref) {
 
     if (error) {
-      ok(true, 'An error in the underlying store; launch the test again');
+      ok(false, 'An error in the underlying store; launch the test again');
       QUnit.start();
       return;
     }
@@ -68,7 +67,7 @@ test('Memory db external reference', function () {
         ok(false, 'No error shouldn\'t happen here');
       }
 
-      equal(myDb.store1[obj.myId], obj,
+      deepEqual(myDb.store1[obj.myId], obj,
         'The got from the DB is the same if we access using our external reference');
 
       ref.save('store1', {myId: 'oranges', quantity: 1}, function (error, obj) {
@@ -77,7 +76,7 @@ test('Memory db external reference', function () {
           ok(false, 'No error shouldn\'t happen here');
         }
 
-        equal(myDb.store1[obj.myId], obj,
+        deepEqual(myDb.store1[obj.myId], obj,
           'object saved in store1 , is the same that the object accessed from our external db reference');
 
 
@@ -95,7 +94,7 @@ test('Memory db external reference', function () {
                 ok(false, 'No error shouldn\'t happen here');
               }
 
-              equal(myDb.store3[obj.key], obj,
+              deepEqual(myDb.store3[obj.key], obj,
                 'object saved in store3 , returned the key and value to the callback');
 
               ref.save('store3', {
@@ -105,7 +104,7 @@ test('Memory db external reference', function () {
                     ok(false, 'No error shouldn\'t happen here');
                   }
 
-                  equal(myDb.store3[obj.key], obj,
+                  deepEqual(myDb.store3[obj.key], obj,
                     'object saved in store3 , returned the key and value to the callback');
 
 
@@ -135,7 +134,7 @@ test('Memory db external reference', function () {
                           ok(false, 'results should be an array')
                         } else {
                           if (results.length !== 5) {
-                            ok(false, 'results array should have 4 elements')
+                            ok(false, 'results array should have 5 elements')
                           } else {
                             var i;
                             for (i = 0; i < results.length; i++) {
@@ -146,20 +145,8 @@ test('Memory db external reference', function () {
                         }
 
 
-                        if (Object.freeze) {
-                          throws(function () {
-                              var obj = myDb.store1['kiwi'];
-
-                              obj.quantity = 15;
-
-                            }, TypeError,
-                            'The object was frozen and "use strict" is enable so TypeError was thrown');
-                        } else {
-                          ok(true, 'ECMAScript 5 is not supported so objects are not frozen');
-                        }
-
-                        // Test if extDb don't modify the stores of the internal Db
-                        delete myDb.store1;
+                       // Test if extDb don't modify the stores of the internal Db
+                        //delete myDb.store1;
                         myDb.store3['new element'] = {key: 'new element', desc: 'added externally'};
 
 
