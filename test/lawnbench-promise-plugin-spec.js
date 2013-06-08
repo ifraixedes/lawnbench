@@ -80,7 +80,7 @@ function testCollectionNames(lawnbench) {
       QUnit.start();
 
     }, function (error) {
-      ok(true, 'An error in the underlying store; launch the test again');
+      ok(false, 'An error in the underlying store; launch the test again');
       QUnit.start();
     });
   });
@@ -177,9 +177,8 @@ function testKeys(lawnbench) {
       QUnit.start();
 
     }, function (error) {
-      ok(true,
-        'An error in the underlying store; launch the test again, but it will happen ' +
-          'again maybe there is something wrong');
+      ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
+        'again maybe there is something wrong');
       QUnit.start();
     });
   });
@@ -202,9 +201,8 @@ function testRemove(lawnbench) {
       QUnit.start();
 
     }, function (err) {
-      ok(true,
-        'An error in the underlying store; launch the test again, but it will happen ' +
-          'again maybe there is something wrong');
+      ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
+        'again maybe there is something wrong');
       QUnit.start();
     });
   });
@@ -237,9 +235,8 @@ function testAll(lawnbench) {
       QUnit.start();
 
     }, function (error) {
-      ok(true,
-        'An error in the underlying store; launch the test again, but it will happen ' +
-          'again maybe there is something wrong');
+      ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
+        'again maybe there is something wrong');
       QUnit.start();
     });
   });
@@ -264,9 +261,8 @@ function testGet(lawnbench) {
       QUnit.start();
 
     }, function (error) {
-      ok(true,
-        'An error in the underlying store; launch the test again, but it will happen ' +
-          'again maybe there is something wrong');
+      ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
+        'again maybe there is something wrong');
       QUnit.start();
     });
   });
@@ -288,9 +284,8 @@ function testExists(lawnbench) {
       QUnit.start();
 
     }, function (error) {
-      ok(true,
-        'An error in the underlying store; launch the test again, but it will happen ' +
-          'again maybe there is something wrong');
+      ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
+        'again maybe there is something wrong');
       QUnit.start();
     });
   });
@@ -321,9 +316,8 @@ function testNuke(lawnbench) {
         QUnit.start();
 
       }, function (error) {
-        ok(true,
-          'An error in the underlying store; launch the test again, but it will happen ' +
-            'again maybe there is something wrong');
+        ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
+          'again maybe there is something wrong');
         QUnit.start();
       });
     });
@@ -355,9 +349,8 @@ function testGetCollection(lawnbench) {
         QUnit.start();
 
       }, function (error) {
-        ok(true,
-          'An error in the underlying store; launch the test again, but it will happen ' +
-            'again maybe there is something wrong');
+        ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
+          'again maybe there is something wrong');
         QUnit.start();
       });
     });
@@ -386,9 +379,8 @@ function testNukeAll(lawnbench) {
 
         QUnit.start();
       }, function (error) {
-        ok(true,
-          'An error in the underlying store; launch the test again, but it will happen ' +
-            'again maybe there is something wrong');
+        ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
+          'again maybe there is something wrong');
         QUnit.start();
       });
     });

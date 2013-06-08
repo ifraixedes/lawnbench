@@ -46,7 +46,7 @@ asyncTest('init and save test', function (lbInst) {
   }, function (error, ref) {
 
     if (error) {
-      ok(true, 'An error in the underlying store; launch the test again');
+      ok(false, 'An error in the underlying store; launch the test again');
       QUnit.start();
       return;
     }
@@ -54,7 +54,7 @@ asyncTest('init and save test', function (lbInst) {
     ref.save('store1', {myId: 'kiwi', quantity: 3}, function (error, obj) {
 
       if (error) {
-        ok(true, 'An error in the underlying store; launch the test again');
+        ok(false, 'An error in the underlying store; launch the test again');
         QUnit.start();
         return;
       }
@@ -65,7 +65,7 @@ asyncTest('init and save test', function (lbInst) {
 
     ref.save('store2', {value: 'Wrapper without key'}, function (error, obj) {
       if (error) {
-        ok(true, 'An error in the underlying store; launch the test again');
+        ok(false, 'An error in the underlying store; launch the test again');
         QUnit.start();
         return;
       }
@@ -93,7 +93,7 @@ asyncTest('init and save test', function (lbInst) {
       ], function (error, obj) {
 
         if (error) {
-          ok(true, 'An error in the underlying store; launch the test again');
+          ok(false, 'An error in the underlying store; launch the test again');
           QUnit.start();
           return;
         }
@@ -124,7 +124,7 @@ asyncTest('init and save test', function (lbInst) {
           }, function (error, obj) {
 
             if (error) {
-              ok(true, 'An error in the underlying store; launch the test again');
+              ok(false, 'An error in the underlying store; launch the test again');
               QUnit.start();
               return;
             }
@@ -148,7 +148,7 @@ asyncTest('init and save test', function (lbInst) {
 
             ref.all('store2', function (error, obj) {
               if (error) {
-                ok(true, 'An error in the underlying store; launch the test again');
+                ok(false, 'An error in the underlying store; launch the test again');
                 QUnit.start();
                 return;
               }

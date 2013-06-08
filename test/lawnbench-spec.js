@@ -41,7 +41,7 @@ asyncTest('constructor requires some options', function () {
         function (error, ref) {
           ref.collectionNames(function (error, colList) {
             if (error) {
-              ok(true, 'An error in the underlying store; launch the test again');
+              ok(false, 'An error in the underlying store; launch the test again');
               QUnit.start();
               return;
             }
@@ -68,7 +68,7 @@ asyncTest('constructor requires some options', function () {
 
                 ref.collectionNames(function (error, colList) {
                   if (error) {
-                    ok(true, 'An error in the underlying store; launch the test again');
+                    ok(false, 'An error in the underlying store; launch the test again');
                     QUnit.start();
                     return;
                   }
@@ -123,7 +123,7 @@ asyncTest('saving individual values in collections data stores', function () {
     ]}, function (error, ref) {
 
     if (error) {
-      ok(true, 'An error in the underlying store; launch the test again');
+      ok(false, 'An error in the underlying store; launch the test again');
       QUnit.start();
       return;
     }
@@ -131,7 +131,7 @@ asyncTest('saving individual values in collections data stores', function () {
     ref.save('store1', {myId: 'kiwi', quantity: 3}, function (error, obj) {
 
       if (error) {
-        ok(true, 'An error in the underlying store; launch the test again');
+        ok(false, 'An error in the underlying store; launch the test again');
         QUnit.start();
         return;
       }
@@ -148,7 +148,7 @@ asyncTest('saving individual values in collections data stores', function () {
 
         ref.save('store2', {id: 'antonio', value: 'Antonio\'s Fruits'}, function (error, obj) {
           if (error) {
-            ok(true, 'An error in the underlying store; launch the test again');
+            ok(false, 'An error in the underlying store; launch the test again');
             QUnit.start();
             return;
           }
@@ -161,7 +161,7 @@ asyncTest('saving individual values in collections data stores', function () {
           ref.save('store3', {key: 'myKey', desc: 'autokey but the value of the key is provided'},
             function (error, obj) {
               if (error) {
-                ok(true, 'An error in the underlying store; launch the test again');
+                ok(false, 'An error in the underlying store; launch the test again');
                 QUnit.start();
                 return;
               }
@@ -173,7 +173,7 @@ asyncTest('saving individual values in collections data stores', function () {
                   desc: 'autokey but the value of the key is NOT provided'},
                 function (error, obj) {
                   if (error) {
-                    ok(true, 'An error in the underlying store; launch the test again');
+                    ok(false, 'An error in the underlying store; launch the test again');
                     QUnit.start();
                     return;
                   }
@@ -185,7 +185,7 @@ asyncTest('saving individual values in collections data stores', function () {
                   ref.save('store1', {myId: 'oranges', quantity: 1}, function (error, obj) {
 
                     if (error) {
-                      ok(true, 'An error in the underlying store; launch the test again');
+                      ok(false, 'An error in the underlying store; launch the test again');
                       QUnit.start();
                       return;
                     }
@@ -204,7 +204,7 @@ asyncTest('saving individual values in collections data stores', function () {
 
                       ref.save('store4', {value: 'Wrapper without key'}, function (error, obj) {
                         if (error) {
-                          ok(true, 'An error in the underlying store; launch the test again');
+                          ok(false, 'An error in the underlying store; launch the test again');
                           QUnit.start();
                           return;
                         }
@@ -214,7 +214,7 @@ asyncTest('saving individual values in collections data stores', function () {
 
                         ref.save('store4', 10, function (error, obj) {
                           if (error) {
-                            ok(true, 'An error in the underlying store; launch the test again');
+                            ok(false, 'An error in the underlying store; launch the test again');
                             QUnit.start();
                             return;
                           }
@@ -224,7 +224,7 @@ asyncTest('saving individual values in collections data stores', function () {
                           ref.save('store4', {id: 'justKey', value: 'wrapper with key'},
                             function (error, obj) {
                               if (error) {
-                                ok(true, 'An error in the underlying store; launch the test again');
+                                ok(false, 'An error in the underlying store; launch the test again');
                                 QUnit.start();
                                 return;
                               }
@@ -259,7 +259,7 @@ function launchTestRemoveValues(lawnbench) {
 
     lawnbench.nuke('store2', function (error) {
       if (error) {
-        ok(true, 'An error in the underlying store; launch the test again, but it will happen ' +
+        ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
           'again maybe there is something wrong');
         QUnit.start();
       }
@@ -268,7 +268,7 @@ function launchTestRemoveValues(lawnbench) {
 
       lawnbench.all('store2', function (error, results) {
         if (error) {
-          ok(true,
+          ok(false,
             'An error in the underlying store; launch the test again, but it will happen ' +
               'again maybe there is something wrong');
           QUnit.start();
@@ -280,7 +280,7 @@ function launchTestRemoveValues(lawnbench) {
         lawnbench.remove('store1', ['kiwi', 'oranges'], function (error) {
 
           if (error) {
-            ok(true,
+            ok(false,
               'An error in the underlying store; launch the test again, but it will happen ' +
                 'again maybe there is something wrong');
             QUnit.start();
@@ -289,7 +289,7 @@ function launchTestRemoveValues(lawnbench) {
 
           lawnbench.all('store1', function (error, results) {
 
-            if (error) {
+            if (false) {
               ok(true,
                 'An error in the underlying store; launch the test again, but it will happen ' +
                   'again maybe there is something wrong');
@@ -306,7 +306,7 @@ function launchTestRemoveValues(lawnbench) {
             lawnbench.remove('store3', 'myKey', function (error) {
 
               if (error) {
-                ok(true,
+                ok(false,
                   'An error in the underlying store; launch the test again, but it will happen ' +
                     'again maybe there is something wrong');
                 QUnit.start();
@@ -316,7 +316,7 @@ function launchTestRemoveValues(lawnbench) {
               lawnbench.all('store3', function (error, results) {
 
                 if (error) {
-                  ok(true,
+                  ok(false,
                     'An error in the underlying store; launch the test again, but it will happen ' +
                       'again maybe there is something wrong');
                   QUnit.start();
@@ -337,18 +337,16 @@ function launchTestRemoveValues(lawnbench) {
 
                 lawnbench.nukeAll(function (error) {
                   if (error) {
-                    ok(true,
-                      'An error in the underlying store; launch the test again, but it will happen ' +
-                        'again maybe there is something wrong');
+                    ok(false, 'An error in the underlying store; launch the test again, but it ' +
+                      'will happen again maybe there is something wrong');
                     QUnit.start();
                     return;
                   }
 
                   lawnbench.all('store1', function (error, results) {
                     if (error) {
-                      ok(true,
-                        'An error in the underlying store; launch the test again, but it will happen ' +
-                          'again maybe there is something wrong');
+                      ok(false, 'An error in the underlying store; launch the test again, but it ' +
+                        'will happen again maybe there is something wrong');
                       QUnit.start();
                       return;
                     }
@@ -361,9 +359,8 @@ function launchTestRemoveValues(lawnbench) {
 
                     lawnbench.all('store2', function (error, results) {
                       if (error) {
-                        ok(true,
-                          'An error in the underlying store; launch the test again, but it will happen ' +
-                            'again maybe there is something wrong');
+                        ok(false, 'An error in the underlying store; launch the test again, but ' +
+                          'it will happen again maybe there is something wrong');
                         QUnit.start();
                         return;
                       }
@@ -376,9 +373,8 @@ function launchTestRemoveValues(lawnbench) {
 
                       lawnbench.all('store3', function (error, results) {
                         if (error) {
-                          ok(true,
-                            'An error in the underlying store; launch the test again, but it will happen ' +
-                              'again maybe there is something wrong');
+                          ok(false, 'An error in the underlying store; launch the test again, ' +
+                            'but it will happen again maybe there is something wrong');
                           QUnit.start();
                           return;
                         }
@@ -391,9 +387,8 @@ function launchTestRemoveValues(lawnbench) {
 
                         lawnbench.all('store4', function (error, results) {
                           if (error) {
-                            ok(true,
-                              'An error in the underlying store; launch the test again, but it will happen ' +
-                                'again maybe there is something wrong');
+                            ok(false, 'An error in the underlying store; launch the test again, ' +
+                              'but it will happen again maybe there is something wrong');
                             QUnit.start();
                             return;
                           }
@@ -433,7 +428,7 @@ function launchSaveValuesInBatch(lawnbench) {
     ], function (error, objs) {
 
       if (error) {
-        ok(true, 'An error in the underlying store; launch the test again');
+        ok(false, 'An error in the underlying store; launch the test again');
         QUnit.start();
         return;
       }
@@ -472,7 +467,7 @@ function launchSaveValuesInBatch(lawnbench) {
         ],
           function (error, objs) {
             if (error) {
-              ok(true, 'An error in the underlying store; launch the test again');
+              ok(false, 'An error in the underlying store; launch the test again');
               QUnit.start();
               return;
             }
@@ -497,7 +492,7 @@ function launchSaveValuesInBatch(lawnbench) {
               {id: 'justKey', value: 'wrapper with key'}
             ], function (error, objs) {
               if (error) {
-                ok(true, 'An error in the underlying store; launch the test again');
+                ok(false, 'An error in the underlying store; launch the test again');
                 QUnit.start();
                 return;
               }
@@ -539,7 +534,7 @@ function launchTestGetValues(lawnbench, store4AutoKey, store4AutoValue) {
 
     lawnbench.all('store1', function (error, results) {
       if (error) {
-        ok(true, 'An error in the underlying store; launch the test again, but it will happen ' +
+        ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
           'again maybe there is something wrong');
         QUnit.start();
         return;
@@ -564,7 +559,7 @@ function launchTestGetValues(lawnbench, store4AutoKey, store4AutoValue) {
 
       lawnbench.get('store1', ['kiwi', 'oranges'], function (error, results) {
         if (error) {
-          ok(true, 'An error in the underlying store; launch the test again, but it will happen ' +
+          ok(false, 'An error in the underlying store; launch the test again, but it will happen ' +
             'again maybe there is something wrong');
           QUnit.start();
           return;
@@ -589,9 +584,8 @@ function launchTestGetValues(lawnbench, store4AutoKey, store4AutoValue) {
 
         lawnbench.get('store3', 'myKey', function (error, result) {
           if (error) {
-            ok(true,
-              'An error in the underlying store; launch the test again, but it will happen ' +
-                'again maybe there is something wrong');
+            ok(false, 'An error in the underlying store; launch the test again, but it will ' +
+              'happen again maybe there is something wrong');
             QUnit.start();
             return;
           }
@@ -602,9 +596,8 @@ function launchTestGetValues(lawnbench, store4AutoKey, store4AutoValue) {
 
           lawnbench.get('store4', store4AutoKey, function (error, result) {
             if (error) {
-              ok(true,
-                'An error in the underlying store; launch the test again, but it will happen ' +
-                  'again maybe there is something wrong');
+              ok(false, 'An error in the underlying store; launch the test again, but it will ' +
+                'happen again maybe there is something wrong');
               QUnit.start();
               return;
             }
@@ -613,9 +606,8 @@ function launchTestGetValues(lawnbench, store4AutoKey, store4AutoValue) {
 
             lawnbench.all('store2', function (error, results) {
               if (error) {
-                ok(true,
-                  'An error in the underlying store; launch the test again, but it will happen ' +
-                    'again maybe there is something wrong');
+                ok(false, 'An error in the underlying store; launch the test again, but it will ' +
+                  'happen again maybe there is something wrong');
                 QUnit.start();
                 return;
               }
@@ -652,7 +644,7 @@ function launchTestExist(lawnbench) {
 
     lawnbench.exists('store1', 'kiwi', function (error, check) {
       if (error) {
-        ok(true, 'An error in the underlying store; launch the test again');
+        ok(false, 'An error in the underlying store; launch the test again');
         QUnit.start();
         return;
       }
@@ -661,7 +653,7 @@ function launchTestExist(lawnbench) {
 
       lawnbench.exists('store2', 'antonio', function (error, check) {
         if (error) {
-          ok(true, 'An error in the underlying store; launch the test again');
+          ok(false, 'An error in the underlying store; launch the test again');
           QUnit.start();
           return;
         }
@@ -670,7 +662,7 @@ function launchTestExist(lawnbench) {
 
         lawnbench.exists('store3', 'it does not exist', function (error, check) {
           if (error) {
-            ok(true, 'An error in the underlying store; launch the test again');
+            ok(false, 'An error in the underlying store; launch the test again');
             QUnit.start();
             return;
           }
@@ -694,7 +686,7 @@ function launchTestKeys(lawnbench) {
 
     lawnbench.keys('store1', function (error, keys) {
       if (error) {
-        ok(true, 'An error in the underlying store; launch the test again');
+        ok(false, 'An error in the underlying store; launch the test again');
         QUnit.start();
         return;
       }
@@ -714,7 +706,7 @@ function launchTestKeys(lawnbench) {
 
       lawnbench.keys('store2', function (error, keys) {
         if (error) {
-          ok(true, 'An error in the underlying store; launch the test again');
+          ok(false, 'An error in the underlying store; launch the test again');
           QUnit.start();
           return;
         }
@@ -745,14 +737,14 @@ function launchSimpleTestFromCollection(lawnbench) {
     lawnbench.getCollection('store1', function (error, storeCol) {
 
       if (error) {
-        ok(true, 'An error in the underlying store; launch the test again');
+        ok(false, 'An error in the underlying store; launch the test again');
         QUnit.start();
         return;
       }
 
       storeCol.keys(function (error, keys) {
         if (error) {
-          ok(true, 'An error in the underlying store; launch the test again');
+          ok(false, 'An error in the underlying store; launch the test again');
           QUnit.start();
           return;
         }
@@ -771,7 +763,7 @@ function launchSimpleTestFromCollection(lawnbench) {
 
         storeCol.get('kiwi', function (error, result) {
           if (error) {
-            ok(true, 'An error in the underlying store; launch the test again');
+            ok(false, 'An error in the underlying store; launch the test again');
             QUnit.start();
             return;
           }
