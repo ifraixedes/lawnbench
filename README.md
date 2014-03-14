@@ -103,3 +103,6 @@ This library was named Lawnbench, because it allows to manage several collection
 ## Acknowledges
 
 I want to say many thanks to Brian LeRoux and Lawnchair contributors as well, to start and release under a Open Source License the Lanwchair project.
+
+## License
+Just MIT, check LICENSE file
